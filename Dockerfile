@@ -11,7 +11,7 @@ RUN apt update \
     && mkdir -p /leanote/data/files \
     && mkdir -p /leanote/data/mongodb_backup \
     ## copy data then delete
-    && cp -rp /leanote/mongodb_backup/* /leanote/data/mongodb_backup \   
+    && cp -r /leanote/mongodb_backup/* /leanote/data/mongodb_backup \  
     && rm -r /leanote/public/upload \
     && rm -r /leanote/mongodb_backup \
     && rm leanote-linux-amd64-v${LEANOTE_VERSION}.bin.tar.gz \
@@ -27,8 +27,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14
     && apt install -y \
         # Tools to export pdf
         wkhtmltopdf \
-        # Install mongodb then Tools to backup mongodb
-        mongodb \
+        # Tools to backup mongodb
         mongodb-org-tools \
         # wkhtmltopdf headless workaround
         xvfb \
@@ -62,8 +61,8 @@ killall Xvfb\
 
 RUN mongorestore -h localhost -d leanote --dir /leanote/mongodb_backup/leanote_install_data/ \
     #add line to start mongod
-    && sed -i '1a monogod -dbpath /leanote/data/data &' /leanote/bin/run.sh 
-    
+    && sed -i '1a monogod -dbpath /leanote/data/data &' /leanote/bin/run.sh
+
 VOLUME /leanote/data/
 
 EXPOSE 9000
