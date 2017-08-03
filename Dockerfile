@@ -29,7 +29,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14
         wkhtmltopdf \
         # Tools to backup mongodb
         mongodb \
-        mongodb-org-tools \
+        #mongodb-org-tools \
         # wkhtmltopdf headless workaround
         xvfb \
         # Additionnal dependencies for better rendering
