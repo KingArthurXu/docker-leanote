@@ -35,6 +35,8 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14
         fontconfig \
         dbus \
         psmisc \
+    # restore leanote install data
+    && mongorestore -h localhost -d leanote --dir /leanote/mongodb_backup/leanote_install_data/ \
     # Chinese fonts
     && apt-get install -y \
         fonts-arphic-bkai00mp \
@@ -57,6 +59,8 @@ DISPLAY=:0.0 wkhtmltopdf-origin $@ \n\
 killall Xvfb\
 ' > /usr/bin/wkhtmltopdf && \
     chmod +x /usr/bin/wkhtmltopdf
+    
+sed -i '1a monogod -dbpath /leanote/data/data &' r.sh
 
 VOLUME /leanote/data/
 
