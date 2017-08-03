@@ -10,6 +10,7 @@ RUN apt update \
     && mkdir -p /leanote/data/public/upload \
     && mkdir -p /leanote/data/files \
     && mkdir -p /leanote/data/mongodb_backup \
+    ## copy data then delete
     && cp -rp /leanote/mongodb_backup/* /leanote/data/mongodb_backup \   
     && rm -r /leanote/public/upload \
     && rm -r /leanote/mongodb_backup \
@@ -26,7 +27,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14
     && apt install -y \
         # Tools to export pdf
         wkhtmltopdf \
-        # Tools to backup mongodb
+        # Install mongodb then Tools to backup mongodb
         mongodb mongodb-org-tools \
         # wkhtmltopdf headless workaround
         xvfb \
