@@ -60,9 +60,7 @@ killall Xvfb\
 ' > /usr/bin/wkhtmltopdf && \
     chmod +x /usr/bin/wkhtmltopdf
 
-RUN
-    # restore leanote install data
-    mongorestore -h localhost -d leanote --dir /leanote/mongodb_backup/leanote_install_data/ \
+RUN mongorestore -h localhost -d leanote --dir /leanote/mongodb_backup/leanote_install_data/ \
     #add line to start mongod
     && sed -i '1a monogod -dbpath /leanote/data/data &' /leanote/bin/run.sh \
     
