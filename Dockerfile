@@ -18,8 +18,6 @@ RUN apt update \
     && ln -s /leanote/data/public/upload /leanote/public/upload \
     && ln -s /leanote/data/files /leanote/files \
     && ln -s /leanote/data/mongodb_backup /leanote/mongodb_backup \
-    #add line to start mongod
-    && sed -i '1a monogod -dbpath /leanote/data/data &' /leanote/bin/run.sh \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 \
@@ -30,7 +28,8 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14
         # Tools to export pdf
         wkhtmltopdf \
         # Install mongodb then Tools to backup mongodb
-        mongodb mongodb-org-tools \
+        mongodb \
+        mongodb-org-tools \
         # wkhtmltopdf headless workaround
         xvfb \
         # Additionnal dependencies for better rendering
@@ -38,8 +37,6 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14
         fontconfig \
         dbus \
         psmisc \
-    # restore leanote install data
-    && mongorestore -h localhost -d leanote --dir /leanote/mongodb_backup/leanote_install_data/ \
     # Chinese fonts
     && apt-get install -y \
         fonts-arphic-bkai00mp \
@@ -63,6 +60,12 @@ killall Xvfb\
 ' > /usr/bin/wkhtmltopdf && \
     chmod +x /usr/bin/wkhtmltopdf
 
+RUN
+    # restore leanote install data
+    mongorestore -h localhost -d leanote --dir /leanote/mongodb_backup/leanote_install_data/ \
+    #add line to start mongod
+    && sed -i '1a monogod -dbpath /leanote/data/data &' /leanote/bin/run.sh \
+    
 VOLUME /leanote/data/
 
 EXPOSE 9000
