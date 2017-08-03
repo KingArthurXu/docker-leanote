@@ -28,6 +28,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14
         # Tools to export pdf
         wkhtmltopdf \
         # Tools to backup mongodb
+        mongodb \
         mongodb-org-tools \
         # wkhtmltopdf headless workaround
         xvfb \
@@ -59,12 +60,12 @@ killall Xvfb\
 ' > /usr/bin/wkhtmltopdf && \
     chmod +x /usr/bin/wkhtmltopdf
 
-RUN mongod --dbpath /leanote/data/data &
-RUN sleep 10 \ 
-    && mongorestore -h localhost -d leanote --dir /leanote/mongodb_backup/leanote_install_data/ \
-    #add line to start mongod
-    && sed -i '1a monogod -dbpath /leanote/data/data &' /leanote/bin/run.sh
-
+RUN     sed -i '1a monogod --dbpath /leanote/data/data &' /leanote/bin/run.sh \
+    &&  sed -i '2a sleep 8 ' /leanote/bin/run.sh \
+    &&  sed -i '3a if [ ! -f "/leanote/date/data/leanote.0" ]; then ' /leanote/bin/run.sh \
+    &&  sed -i '4a      mongorestore -h localhost -d leanote --dir /leanote/mongodb_backup/leanote_install_data/' /leanote/bin/run.sh \
+    &&  sed -i '5a fi' /leanote/bin/run.sh
+    
 VOLUME /leanote/data/
 
 EXPOSE 9000
