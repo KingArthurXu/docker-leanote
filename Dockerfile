@@ -59,9 +59,8 @@ killall Xvfb\
 ' > /usr/bin/wkhtmltopdf && \
     chmod +x /usr/bin/wkhtmltopdf
 
-RUN mongod -dbpath /leanote/data/data \& \
-    && sleep 5 \
-    && mongorestore -h localhost -d leanote --dir /leanote/mongodb_backup/leanote_install_data/ \
+RUN mongod --dbpath /leanote/data/data &
+RUN mongorestore -h localhost -d leanote --dir /leanote/mongodb_backup/leanote_install_data/ \
     #add line to start mongod
     && sed -i '1a monogod -dbpath /leanote/data/data &' /leanote/bin/run.sh
 
