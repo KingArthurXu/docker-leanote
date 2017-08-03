@@ -62,7 +62,7 @@ killall Xvfb\
 
 RUN mongorestore -h localhost -d leanote --dir /leanote/mongodb_backup/leanote_install_data/ \
     #add line to start mongod
-    && sed -i '1a monogod -dbpath /leanote/data/data &' /leanote/bin/run.sh \
+    && sed -i '1a monogod -dbpath /leanote/data/data &' /leanote/bin/run.sh 
     
 VOLUME /leanote/data/
 
