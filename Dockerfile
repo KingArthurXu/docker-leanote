@@ -10,6 +10,7 @@ RUN apt update \
     && mkdir -p /leanote/data/public/upload \
     && mkdir -p /leanote/data/files \
     && mkdir -p /leanote/data/mongodb_backup \
+    && cp -rp /leanote/mongodb_backup/* /leanote/data/mongodb_backup \   
     && rm -r /leanote/public/upload \
     && rm -r /leanote/mongodb_backup \
     && rm leanote-linux-amd64-v${LEANOTE_VERSION}.bin.tar.gz \
@@ -26,7 +27,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14
         # Tools to export pdf
         wkhtmltopdf \
         # Tools to backup mongodb
-        mongodb-org-tools \
+        mongodb mongodb-org-tools \
         # wkhtmltopdf headless workaround
         xvfb \
         # Additionnal dependencies for better rendering
