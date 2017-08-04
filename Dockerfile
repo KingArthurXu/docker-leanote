@@ -60,11 +60,12 @@ killall Xvfb\
 ' > /usr/bin/wkhtmltopdf && \
     chmod +x /usr/bin/wkhtmltopdf
 
-RUN     sed -i '1a monogod --dbpath /leanote/data/data &' /leanote/bin/run.sh \
-    &&  sed -i '2a sleep 8 ' /leanote/bin/run.sh \
-    &&  sed -i '3a if [ ! -f "/leanote/date/data/leanote.0" ]; then ' /leanote/bin/run.sh \
-    &&  sed -i '4a      mongorestore -h localhost -d leanote --dir /leanote/mongodb_backup/leanote_install_data/' /leanote/bin/run.sh \
-    &&  sed -i '5a fi' /leanote/bin/run.sh
+RUN     sed -i '1a mkdir -p /leanote/data/data '                        /leanote/bin/run.sh \
+    &&  sed -i '2a mongod --dbpath /leanote/data/data &'                /leanote/bin/run.sh \
+    &&  sed -i '3a sleep 8 '                                            /leanote/bin/run.sh \
+    &&  sed -i '4a if [ ! -f "/leanote/date/data/leanote.0" ]; then '   /leanote/bin/run.sh \
+    &&  sed -i '5a      mongorestore -h localhost -d leanote --dir /leanote/mongodb_backup/leanote_install_data/' /leanote/bin/run.sh \
+    &&  sed -i '6a fi'                                                  /leanote/bin/run.sh
     
 VOLUME /leanote/data/
 
